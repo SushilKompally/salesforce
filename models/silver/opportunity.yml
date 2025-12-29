@@ -1,0 +1,63 @@
+
+version: 2
+
+models:
+  - name: opportunity
+    config:
+      contract:
+        enforced: true
+    columns:
+      # PRIMARY KEY
+      - name: opportunity_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # FOREIGN KEYS
+      - name: account_id
+        data_type: varchar
+      - name: owner_user_id
+        data_type: varchar
+      - name: campaign_id
+        data_type: varchar
+
+      # DETAILS
+      - name: name
+        data_type: varchar
+      - name: stage_name
+        data_type: varchar
+      - name: amount
+        data_type: number
+      - name: probability
+        data_type: number
+      - name: close_date
+        data_type: date
+      - name: entity_type
+        data_type: varchar
+      - name: lead_source
+        data_type: varchar
+      - name: forecast_category_name
+        data_type: varchar
+
+      # STATUS FLAGS
+      - name: is_closed
+        data_type: boolean
+      - name: is_won
+        data_type: boolean
+
+      # ADDITIONAL INFO
+      - name: next_step
+        data_type: varchar
+      - name: primary_competitor
+        data_type: varchar
+      - name: description
+        data_type: varchar
+
+      # AUDIT DATES
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+
+      # LOAD DATE
+      - name: silver_load_date
+        data_type: timestamp_ntz

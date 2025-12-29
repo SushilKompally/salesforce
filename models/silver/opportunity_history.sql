@@ -1,49 +1,69 @@
-{{
-    config(
-        unique_key="OPPORTUNITY_HISTORY_ID",
-        incremental_strategy="merge",
-    )
-}}
 
-WITH RAW AS (
+/*
+-- Description: Incremental Load Script for Silver Layer - opportunity_history Table
+-- Script Name: opportunity_history.sql
+-- Created on: 16-dec-2025
+-- Author: Sushil Kumar Kompally
+-- Purpose:
+--     Incremental load from Bronze to Silver for the opportunity_history table.
+-- Data source version:v62.0
+-- Change History:
+--     16-dec-2025 - Initial creation - Sushil Kompally
+*/
 
-    SELECT *
-    FROM {{ source("salesforce_bronze", "opportunity_history") }}
+{{ config(
+    unique_key='opportunity_history_id',
+    incremental_strategy='merge',
+) }}
 
-    {% if is_incremental() %}
-        WHERE CAST(LAST_UPDATED AS TIMESTAMP_NTZ) > (
-            SELECT DATEADD(
-                DAY,
-                -1,
-                COALESCE(MAX(LAST_UPADTED), '1900-01-01'::TIMESTAMP_NTZ)
-            )
-            FROM {{ this }}
-        )
-        AND 1 = 1
-    {% else %}
-        WHERE 1 = 1
-    {% endif %}
-    ),
 
-    CLEANED AS (
-  SELECT 
-      OPPORTUNITY_HISTORY_ID,
-      OPPORTUNITY_ID,
-      STAGE_NAME,
-      AMOUNT,
-      PROBABILITY,
-      CLOSE_DATE,
-      FIELD,
-      OLDVALUE,
-      NEWVALUE,
-      IS_CLOSED,
-      IS_WON,
-      CREATED_BY_ID,
-      CREATED_DATE,          
-      LAST_UPDATED,               
-      CURRENT_TIMESTAMP()::TIMESTAMP AS SILVER_LOAD_DATE
-      FROM RAW
-    )
+WITH raw AS (
+
+  SELECT
+    *,
+    {{ source_metadata() }}
+  FROM {{ source('salesforce_bronze', 'opportunity_history') }}
+  WHERE 1=1
+  {{ incremental_filter() }}  
+
+),
+
+
+
+cleaned AS (
+
+    SELECT
+        -- PRIMARY KEY
+        opportunity_history_id AS opportunity_history_id,
+
+        -- FOREIGN KEYS
+        opportunity_id AS opportunity_id,
+
+        -- DETAILS
+        {{ clean_string('stage_name') }} AS stage_name,
+        amount                          AS amount,
+        probability                     AS probability,
+        close_date                      AS close_date,
+
+        -- CHANGE TRACKING
+        {{ clean_string('field') }}     AS field,
+        {{ clean_string('oldvalue') }}  AS old_value,
+        {{ clean_string('newvalue') }}  AS new_value,
+
+        -- STATUS FLAGS
+        is_closed AS is_closed,
+        is_won    AS is_won,
+
+        -- AUDIT
+        created_by_id      AS created_by_id,
+        created_date       AS created_date,
+        last_updated       AS last_updated,
+
+        -- LOAD DATE
+        current_timestamp()::timestamp_ntz AS silver_load_date
+
+    FROM raw
+)
 
 SELECT *
-FROM CLEANED
+FROM cleaned;

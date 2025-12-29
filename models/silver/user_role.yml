@@ -1,0 +1,39 @@
+
+version: 2
+
+models:
+  - name: user_role
+    config:
+      contract:
+        enforced: true
+    columns:
+      # PRIMARY KEY
+      - name: user_role_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # DETAILS
+      - name: name
+        data_type: varchar
+      - name: developer_name
+        data_type: varchar
+      - name: rollup_description
+        data_type: varchar
+
+      # FOREIGN KEYS
+      - name: parent_role_id
+        data_type: varchar
+      - name: business_hours_id
+        data_type: varchar
+      - name: forecast_user_id
+        data_type: varchar
+
+      # AUDIT DATES
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+
+      # LOAD DATE
+      - name: silver_load_date
+        data_type: timestamp_ntz
