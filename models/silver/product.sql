@@ -27,32 +27,34 @@ WITH raw AS (
 
 ),
 
+
 cleaned AS (
 
     SELECT
         -- PRIMARY KEY
-        id                                 AS activity_id,
+        id AS product_id,
 
-        -- FOREIGN KEYS
-        ownerid                            AS owner_user_id,
-        whoid                              AS who_id,
-        whatid                             AS what_id,
+        -- DETAILS
+        {{ clean_string('name') }}                  AS name,
+        {{ clean_string('productcode') }}          AS product_code,
+        {{ clean_string('description') }}          AS description,
+        {{ clean_string('family') }}               AS family,
+        isactive                                   AS is_active,
 
-        -- DETAILS (strings cleaned)
-        {{ clean_string('subject') }}      AS subject,
-        {{ clean_string('description') }}  AS description,
+        -- ADDITIONAL INFO
+        {{ clean_string('quantityunitofmeasure') }} AS quantity_unit_of_measure,
+        {{ clean_string('vendorproductcode') }}     AS vendor_product_code,
+        {{ clean_string('manufacturer') }}          AS manufacturer,
 
-        -- DATES / TIMESTAMPS (Snowflake-safe)
+        -- AUDIT DATES
         createddate      AS created_date,
         lastmodifieddate AS last_modified_date,
-        activitydate      AS activity_date,
 
-        -- FLAGS / METADATA
-        isdeleted                         AS is_deleted,
+        -- LOAD DATE
         current_timestamp()::timestamp_ntz AS silver_load_date
+
     FROM raw
 )
 
 SELECT *
 FROM cleaned
-

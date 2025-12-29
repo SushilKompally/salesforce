@@ -1,0 +1,41 @@
+
+version: 2
+
+models:
+  - name: quote_lineitem
+    config:
+      contract:
+        enforced: true
+    columns:
+      # PRIMARY KEY
+      - name: quote_line_item_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # FOREIGN KEYS
+      - name: quote_id
+        data_type: varchar
+      - name: product_id
+        data_type: varchar
+
+      # DETAILS
+      - name: quantity
+        data_type: number
+      - name: unit_price
+        data_type: number
+      - name: service_date
+        data_type: date
+      - name: discount
+        data_type: number
+      - name: total_price
+        data_type: number
+
+      # AUDIT DATES
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+
+      # LOAD DATE
+      - name: silver_load_date
+        data_type: timestamp_ntz

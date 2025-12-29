@@ -1,7 +1,7 @@
 
 /*
 -- Description: Incremental Load Script for Silver quote_lineitem - event table
--- Script Name: event_silver.sql
+-- Script Name: quote_lineitem_silver.sql
 -- Created on: 16-Dec-2025
 -- Author: Sushil Kumar Kompally
 -- Purpose:
@@ -12,7 +12,7 @@
 */
 
 {{ config(
-    unique_key='ACTIVITY_ID',
+    unique_key='quote_line_item_id',
     incremental_strategy='merge',
 ) }}
 
@@ -27,32 +27,33 @@ WITH raw AS (
 
 ),
 
+
 cleaned AS (
 
     SELECT
         -- PRIMARY KEY
-        id                                 AS activity_id,
+        id AS quote_line_item_id,
 
         -- FOREIGN KEYS
-        ownerid                            AS owner_user_id,
-        whoid                              AS who_id,
-        whatid                             AS what_id,
+        quoteid    AS quote_id,
+        product2id AS product_id,
 
-        -- DETAILS (strings cleaned)
-        {{ clean_string('subject') }}      AS subject,
-        {{ clean_string('description') }}  AS description,
+        -- DETAILS
+        quantity    AS quantity,
+        unitprice   AS unit_price,
+        servicedate AS service_date,
+        discount    AS discount,
+        totalprice  AS total_price,
 
-        -- DATES / TIMESTAMPS (Snowflake-safe)
+        -- AUDIT DATES
         createddate      AS created_date,
         lastmodifieddate AS last_modified_date,
-        activitydate      AS activity_date,
 
-        -- FLAGS / METADATA
-        isdeleted                         AS is_deleted,
+        -- LOAD DATE
         current_timestamp()::timestamp_ntz AS silver_load_date
+
     FROM raw
 )
 
 SELECT *
 FROM cleaned
-

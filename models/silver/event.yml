@@ -1,0 +1,47 @@
+
+version: 2
+
+models:
+  - name: event
+    description: "Silver layer model for Salesforce Task/Event activities."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ACTIVITY_ID
+        description: "Primary key from Salesforce (Task/Event Id)."
+        data_type: string
+        tests:
+          - not_null
+          - unique
+
+      - name: OWNER_USER_ID
+        data_type: string
+
+      - name: WHO_ID
+        data_type: string
+
+      - name: WHAT_ID
+        data_type: string
+
+      - name: SUBJECT
+        data_type: string
+
+      - name: DESCRIPTION
+        data_type: string
+
+      - name: CREATED_DATE
+        data_type: timestamp_ntz
+
+      - name: last_modified_date,
+        data_type: timestamp_ntz
+      
+      - name: ACTIVITY_DATE
+        data_type: timestamp_ntz
+
+      - name: IS_DELETED
+        data_type: boolean
+
+      - name: SILVER_LOAD_DATE
+        data_type: timestamp_ntz
+

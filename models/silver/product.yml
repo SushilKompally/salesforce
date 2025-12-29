@@ -1,0 +1,43 @@
+
+version: 2
+
+models:
+  - name: product
+    config:
+      contract:
+        enforced: true
+    columns:
+      # PRIMARY KEY
+      - name: product_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # DETAILS
+      - name: name
+        data_type: varchar
+      - name: product_code
+        data_type: varchar
+      - name: description
+        data_type: varchar
+      - name: family
+        data_type: varchar
+      - name: is_active
+        data_type: boolean
+
+      # ADDITIONAL INFO
+      - name: quantity_unit_of_measure
+        data_type: varchar
+      - name: vendor_product_code
+        data_type: varchar
+      - name: manufacturer
+        data_type: varchar
+
+      # AUDIT DATES
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+
+      # LOAD DATE
+      - name: silver_load_date
+        data_type: timestamp_ntz

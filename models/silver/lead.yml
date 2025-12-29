@@ -1,0 +1,84 @@
+
+version: 2
+
+models:
+  - name: lead
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: lead_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: owner_user_id
+        data_type: varchar
+
+      - name: company
+        data_type: varchar
+      - name: first_name
+        data_type: varchar
+      - name: last_name
+        data_type: varchar
+      - name: salutation
+        data_type: varchar
+      - name: title
+        data_type: varchar
+      - name: email
+        data_type: varchar
+      - name: phone
+        data_type: varchar
+      - name: mobile_phone
+        data_type: varchar
+      - name: website
+        data_type: varchar
+      - name: lead_source
+        data_type: varchar
+      - name: status
+        data_type: varchar
+      - name: rating
+        data_type: varchar
+      - name: industry
+        data_type: varchar
+
+      - name: annual_revenue
+        data_type: number
+      - name: number_of_employees
+        data_type: number
+
+      - name: street
+        data_type: varchar
+      - name: city
+        data_type: varchar
+      - name: state
+        data_type: varchar
+      - name: postal_code
+        data_type: varchar
+      - name: country
+        data_type: varchar
+
+      - name: converted_date
+        data_type: timestamp_ntz
+      - name: converted_account_id
+        data_type: varchar
+      - name: converted_contact_id
+        data_type: varchar
+      - name: converted_opportunity_id
+        data_type: varchar
+      - name: is_converted
+        data_type: boolean
+
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: created_by_id
+        data_type: varchar
+      - name: last_modified_date
+        data_type: timestamp_ntz
+      - name: last_modified_by_id
+        data_type: varchar
+
+      - name: description
+        data_type: varchar
+
+      - name: silver_load_date
+        data_type: timestamp_ntz

@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: case
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: case_id
+        data_type: varchar
+        tests: [not_null, unique]
+      - name: account_id
+        data_type: varchar
+      - name: contact_id
+        data_type: varchar
+      - name: owner_user_id
+        data_type: varchar
+      - name: status
+        data_type: varchar
+      - name: priority
+        data_type: varchar
+      - name: origin
+        data_type: varchar
+      - name: reason
+        data_type: varchar
+      - name: subject
+        data_type: varchar
+      - name: description
+        data_type: varchar
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+      - name: closed_date
+        data_type: timestamp_ntz
+      - name: is_closed
+        data_type: boolean
+      - name: silver_load_date
+        data_type: timestamp_ntz
+      - name: is_deleted
+        data_type: boolean

@@ -1,0 +1,63 @@
+
+version: 2
+
+models:
+  - name: user
+    config:
+      contract:
+        enforced: true
+    columns:
+      # PRIMARY KEY
+      - name: user_id
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # LOGIN DETAILS
+      - name: username
+        data_type: varchar
+      - name: email
+        data_type: varchar
+      - name: alias
+        data_type: varchar
+
+      # PERSONAL DETAILS
+      - name: first_name
+        data_type: varchar
+      - name: last_name
+        data_type: varchar
+      - name: is_active
+        data_type: boolean
+
+      # ROLE & PROFILE
+      - name: user_role_id
+        data_type: varchar
+      - name: profile_id
+        data_type: varchar
+
+      # JOB INFO
+      - name: title
+        data_type: varchar
+      - name: department
+        data_type: varchar
+      - name: manager_id
+        data_type: varchar
+
+      # AUDIT DATES
+      - name: created_date
+        data_type: timestamp_ntz
+      - name: last_login_date
+        data_type: timestamp_ntz
+      - name: last_modified_date
+        data_type: timestamp_ntz
+
+      # LOCALE SETTINGS
+      - name: time_zone_sid_key
+        data_type: varchar
+      - name: locale_sid_key
+        data_type: varchar
+      - name: language_locale_key
+        data_type: varchar
+
+      # LOAD DATE
+      - name: silver_load_date
+        data_type: timestamp_ntz
