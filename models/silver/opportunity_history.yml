@@ -1,0 +1,49 @@
+
+version: 2
+
+models:
+  - name: opportunity_history
+    description: "Silver layer model for Salesforce Opportunity History."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: OPPORTUNITY_HISTORY_ID
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: OPPORTUNITY_ID
+        data_type: varchar
+
+      - name: STAGE_NAME
+        data_type: varchar
+      - name: AMOUNT
+        data_type: number
+      - name: PROBABILITY
+        data_type: number
+      - name: CLOSE_DATE
+        data_type: timestamp_ntz
+
+      - name: FIELD
+        data_type: varchar
+      - name: OLDVALUE
+        data_type: varchar
+      - name: NEWVALUE
+        data_type: varchar
+
+      - name: IS_CLOSED
+        data_type: boolean
+      - name: IS_WON
+        data_type: boolean
+
+      - name: CREATED_BY_ID
+        data_type: varchar
+      - name: CREATED_DATE
+        data_type: timestamp_ntz
+
+      - name: LAST_UPDATED
+        data_type: timestamp_ntz
+        tests: [not_null]
+
+      - name: SILVER_LOAD_DATE
+        data_type: timestamp_ntz

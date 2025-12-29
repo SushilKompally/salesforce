@@ -1,0 +1,23 @@
+version: 2
+ 
+sources:
+  - name: salesforce_bronze
+    database:  '{{ var("source_database_name") }}'
+    schema: bronze        
+    tables:
+      - name: account
+        identifier: account
+      - name: campaign
+      - name: user
+      - name: userrole
+      - name: case
+      - name: contact
+      - name: lead
+      - name: opportunity
+      - name: opportunity_history
+      - name: product
+      - name: quote
+      - name: quote_lineitem
+      - name: task_event
+     
+      
