@@ -79,4 +79,4 @@ cleaned AS (
 )
 
 SELECT *
-FROM cleaned;
+FROM cleaned

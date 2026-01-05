@@ -1,26 +1,84 @@
+
 {{ config(
     materialized='incremental',
     incremental_strategy='merge',
-    unique_key='SF_LEAD_ID', 
+    unique_key='SF_LEAD_ID',
+    on_schema_change='append_new_columns',
+    contract={'enforced': True}
 ) }}
 
-SELECT 
-    {{ dbt_utils.surrogate_key(['sl.lead_id']) }} AS LEAD_ID,
-    sl.lead_id AS SF_LEAD_ID,
-    TO_NUMBER(TO_CHAR(sl.created_date, 'YYYYMMDD')) AS LEAD_DATE_KEY,
-    du.DBT_SCD_ID AS  OWNER_USER_KEY,
-    sl.COMPANY,
-    sl.STATUS,
-    fo.SF_OPPORTUNITY_ID AS CONVERTED_OPPORTUNITY_KEY,
-    sl.LAST_MODIFIED_DATE
-FROM {{ ref('lead') }} sl
-LEFT JOIN {{ ref('dim_dates') }} dd 
-    ON TO_NUMBER(TO_CHAR(sl.created_date, 'YYYYMMDD')) = dd.date_key
-LEFT JOIN {{ ref('dim_user') }} du 
+WITH base AS (
+  SELECT 
+      -- PRIMARY KEY (surrogate)
+      {{ dbt_utils.surrogate_key(['sl.lead_id']) }}        AS LEAD_ID,
+
+      -- Natural key
+      sl.lead_id                                           AS SF_LEAD_ID,
+
+      -- Date key
+      TO_NUMBER(TO_CHAR(CAST(sl.created_date AS DATE), 'YYYYMMDD')) AS LEAD_DATE_KEY,
+
+      -- FKs
+      du.dbt_scd_id                                        AS OWNER_USER_KEY,
+      fo.sf_opportunity_id                                 AS CONVERTED_OPPORTUNITY_KEY,
+
+      -- Details
+      sl.company                                           AS COMPANY,
+      sl.status                                            AS STATUS,
+
+      -- Audit
+      CAST(sl.last_modified_date AS TIMESTAMP_NTZ)         AS LAST_MODIFIED_DATE
+  FROM {{ ref('lead') }} sl
+
+  LEFT JOIN {{ ref('dim_dates') }} dd 
+    ON TO_NUMBER(TO_CHAR(CAST(sl.created_date AS DATE), 'YYYYMMDD')) = dd.date_key
+
+  LEFT JOIN {{ ref('dim_user') }} du 
     ON sl.owner_user_id = du.sf_user_id 
-    AND du.dbt_valid_to IS NULL
-LEFT JOIN {{ ref('fact_opportunity') }} fo
+   AND du.dbt_valid_to IS NULL
+
+  LEFT JOIN {{ ref('fact_opportunity') }} fo
     ON sl.converted_opportunity_id = fo.sf_opportunity_id
-{% if is_incremental() %}
-WHERE sl.LAST_MODIFIED_DATE > (SELECT MAX(LAST_MODIFIED_DATE) FROM {{ this }})
-{% endif %}
+),
+
+final AS (
+  SELECT
+      -- ===========================
+      -- PRIMARY KEY
+      -- ===========================
+      LEAD_ID,
+      SF_LEAD_ID,
+
+      -- ===========================
+      -- FOREIGN KEYS
+      -- ===========================
+      OWNER_USER_KEY,
+      CONVERTED_OPPORTUNITY_KEY,
+
+      -- ===========================
+      -- DATES / KEYS
+      -- ===========================
+      LEAD_DATE_KEY,
+
+      -- ===========================
+      -- DETAILS
+      -- ===========================
+      COMPANY,
+      STATUS,
+
+      -- ===========================
+      -- AUDIT / MODEL TARGET TIMESTAMP
+      -- ===========================
+      LAST_MODIFIED_DATE
+  FROM base
+
+  {% if is_incremental() %}
+    WHERE LAST_MODIFIED_DATE > (
+      SELECT COALESCE(MAX(LAST_MODIFIED_DATE), TO_TIMESTAMP_NTZ('1900-01-01'))
+      FROM {{ this }}
+    )
+  {% endif %}
+)
+
+SELECT *
+FROM final

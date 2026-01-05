@@ -1,0 +1,40 @@
+
+version: 2
+
+models:
+  - name: fact_quote
+    description: "Salesforce Quote fact table joined to Opportunity, Account (SCD2 current), and Date dimension."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # PRIMARY KEY / NATURAL KEY
+      - name: QUOTE_KEY
+        description: "Surrogate key generated from SF_QUOTE_ID."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: SF_QUOTE_ID
+        description: "Salesforce Quote natural key."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # FOREIGN KEYS
+      - name: OPPORTUNITY_KEY
+        description: "Foreign key referencing fact_opportunity (surrogate key for opportunity row)."
+        data_type: varchar
+
+      - name: ACCOUNT_KEY
+        description: "Foreign key referencing dim_account (dbt_scd_id for current SCD2 record)."
+        data_type: varchar
+
+      - name: CREATED_DATE_KEY
+        description: "Date key (YYYYMMDD as number) referencing dim_dates.date_key."
+        data_type: number
+
+      # AUDIT / CHANGE TRACKING
+      - name: LAST_MODIFIED_DATE
+        description: "Timestamp of last modification on the quote record (used for incremental loading)."
+        data_type: timestamp_ntz
+      

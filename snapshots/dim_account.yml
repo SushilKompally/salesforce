@@ -1,0 +1,45 @@
+
+version: 2
+
+snapshots:
+  - name: dim_account
+    description: "Snapshot for Salesforce Account implementing SCD Type 2 using timestamp strategy."
+    columns:
+      - name: sf_account_id
+        description: "Unique identifier for the Salesforce Account."
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: "Name of the account."
+
+      - name: account_number
+        description: "Account number assigned in Salesforce."
+
+      - name: entity_type
+        description: "Type of entity for the account."
+
+      - name: industry
+        description: "Industry associated with the account."
+
+      - name: annual_revenue
+        description: "Annual revenue of the account."
+
+      - name: number_of_employees
+        description: "Number of employees in the account."
+
+      - name: owner_user_id
+        description: "User ID of the account owner."
+
+      - name: billing_city
+        description: "Billing city of the account."
+
+      - name: shipping_city
+        description: "Shipping city of the account."
+
+      - name: created_date
+        description: "Date when the account was created."
+
+      - name: last_modified_date
+        description: "Date when the account was last modified."

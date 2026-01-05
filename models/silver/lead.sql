@@ -20,7 +20,7 @@ WITH raw AS (
 
     SELECT
         *,
-        {{ source_metadata() }}       -- adds ingestion_tool, source_last_modified, etc.
+        {{ source_metadata() }}       
     FROM {{ source('salesforce_bronze', 'lead') }}
     WHERE 1=1
     {{ incremental_filter() 
@@ -30,59 +30,59 @@ WITH raw AS (
 
 cleaned AS (
 
-    SELECT
-        -- PRIMARY KEY
-        id                                 AS LEAD_ID,
+SELECT
+    -- primary key
+    id                                 AS lead_id,
 
-        -- FOREIGN KEYS
-        ownerid                            AS OWNER_USER_ID,
+    -- foreign keys
+    ownerid                            AS owner_user_id,
 
-        -- DETAILS (strings cleaned)
-        {{ clean_string('company') }}      AS COMPANY,
-        {{ clean_string('firstname') }}    AS FIRST_NAME,
-        {{ clean_string('lastname') }}     AS LAST_NAME,
-        {{ clean_string('salutation') }}   AS SALUTATION,
-        {{ clean_string('title') }}        AS TITLE,
-        {{ clean_string('email') }}        AS EMAIL,
-        {{ clean_string('phone') }}        AS PHONE,
-        {{ clean_string('mobilephone') }}  AS MOBILE_PHONE,
-        {{ clean_string('website') }}      AS WEBSITE,
-        {{ clean_string('leadsource') }}   AS LEAD_SOURCE,
-        {{ clean_string('status') }}       AS STATUS,
-        {{ clean_string('rating') }}       AS RATING,
-        {{ clean_string('industry') }}     AS INDUSTRY,
+    -- details (strings cleaned)
+    {{ clean_string('company') }}      AS company,
+    {{ clean_string('firstname') }}    AS first_name,
+    {{ clean_string('lastname') }}     AS last_name,
+    {{ clean_string('salutation') }}   AS salutation,
+    {{ clean_string('title') }}        AS title,
+    {{ clean_string('email') }}        AS email,
+    {{ clean_string('phone') }}        AS phone,
+    {{ clean_string('mobilephone') }}  AS mobile_phone,
+    {{ clean_string('website') }}      AS website,
+    {{ clean_string('leadsource') }}   AS lead_source,
+    {{ clean_string('status') }}       AS status,
+    {{ clean_string('rating') }}       AS rating,
+    {{ clean_string('industry') }}     AS industry,
 
-        -- NUMERIC (safe conversions when applicable)
-        annualrevenue        AS ANNUAL_REVENUE,
-        numberofemployees   AS NUMBER_OF_EMPLOYEES,
+    -- numeric (safe conversions when applicable)
+    annualrevenue        AS annual_revenue,
+    numberofemployees    AS number_of_employees,
 
-        -- ADDRESS (strings cleaned)
-        {{ clean_string('street') }}       AS STREET,
-        {{ clean_string('city') }}         AS CITY,
-        {{ clean_string('state') }}        AS STATE,
-        {{ clean_string('postalcode') }}   AS POSTAL_CODE,
-        {{ clean_string('country') }}      AS COUNTRY,
+    -- address (strings cleaned)
+    {{ clean_string('street') }}       AS street,
+    {{ clean_string('city') }}         AS city,
+    {{ clean_string('state') }}        AS state,
+    {{ clean_string('postalcode') }}   AS postal_code,
+    {{ clean_string('country') }}      AS country,
 
-        -- CONVERSION FIELDS
-        converteddate       AS CONVERTED_DATE,
-        convertedaccountid                           AS CONVERTED_ACCOUNT_ID,
-        convertedcontactid                           AS CONVERTED_CONTACT_ID,
-        convertedopportunityid                       AS CONVERTED_OPPORTUNITY_ID,
-        isconverted                                  AS IS_CONVERTED,
+    -- conversion fields
+    converteddate        AS converted_date,
+    convertedaccountid   AS converted_account_id,
+    convertedcontactid   AS converted_contact_id,
+    convertedopportunityid AS converted_opportunity_id,
+    isconverted          AS is_converted,
 
-        -- DATES / AUDIT
-        createddate          AS CREATED_DATE,
-        createdbyid                                  AS CREATED_BY_ID,
-        lastmodifieddate    AS LAST_MODIFIED_DATE,
-        lastmodifiedbyid                             AS LAST_MODIFIED_BY_ID,
+    -- dates / audit
+    createddate          AS created_date,
+    createdbyid          AS created_by_id,
+    lastmodifieddate     AS last_modified_date,
+    lastmodifiedbyid     AS last_modified_by_id,
 
-        -- DESCRIPTION (cleaned)
-        {{ clean_string('description') }}            AS DESCRIPTION,
+    -- description (cleaned)
+    {{ clean_string('description') }}  AS description,
 
-        -- LOAD METADATA
-        current_timestamp()::timestamp_ntz           AS SILVER_LOAD_DATE
+    -- load metadata
+    current_timestamp()::timestamp_ntz AS silver_load_date
+FROM raw
 
-       FROM raw
 )
 
 SELECT *
