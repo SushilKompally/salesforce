@@ -33,11 +33,11 @@ models:
       - name: CREATED_DATE
         data_type: timestamp_ntz
 
-      - name: last_modified_date,
+      - name: last_modified_date
         data_type: timestamp_ntz
       
       - name: ACTIVITY_DATE
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: IS_DELETED
         data_type: boolean

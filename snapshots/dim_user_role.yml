@@ -1,0 +1,21 @@
+
+version: 2
+
+snapshots:
+  - name: dim_user_role
+    description: "SCD Type 2 snapshot for Salesforce User Role dimension"
+    columns:
+      - name: sf_user_role_id
+        description: "Unique identifier for the Salesforce user role"
+        tests:
+          - not_null
+          - unique
+
+      - name: role_name
+        description: "Name of the user role"
+
+      - name: parent_role_id
+        description: "Identifier for the parent role in the hierarchy"
+
+      - name: last_modified_date
+        description: "Timestamp when the user role record was last modified"

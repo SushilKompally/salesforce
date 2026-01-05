@@ -1,0 +1,36 @@
+
+version: 2
+
+snapshots:
+  - name: dim_user
+    description: "SCD Type 2 snapshot for Salesforce User dimension"
+    columns:
+      - name: sf_user_id
+        description: "Unique identifier for the Salesforce user"
+        tests:
+          - not_null
+          - unique
+
+      - name: username
+        description: "Username of the user"
+
+      - name: email
+        description: "Email address of the user"
+
+      - name: first_name
+        description: "First name of the user"
+
+      - name: last_name
+        description: "Last name of the user"
+
+      - name: is_active
+        description: "Indicates if the user is active"
+
+      - name: user_role_id
+        description: "Foreign key referencing the user role"
+
+      - name: created_date
+        description: "Date when the user record was created"
+
+      - name: last_modified_date
+        description: "Timestamp when the user record was last modified"

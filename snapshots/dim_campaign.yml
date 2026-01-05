@@ -1,0 +1,33 @@
+
+version: 2
+
+snapshots:
+  - name: dim_campaign
+    description: "Snapshot for Salesforce Campaign implementing SCD Type 2 using timestamp strategy."
+    columns:
+      - name: sf_campaign_id
+        description: "Unique identifier for the Salesforce Campaign."
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: "Name of the campaign."
+
+      - name: entity_type
+        description: "Type of entity for the campaign."
+
+      - name: status
+        description: "Current status of the campaign."
+
+      - name: start_date
+        description: "Start date of the campaign."
+
+      - name: end_date
+        description: "End date of the campaign."
+
+      - name: owner_user_id
+        description: "User ID of the campaign owner."
+
+      - name: last_modified_date
+        description: "Date when the campaign was last modified."

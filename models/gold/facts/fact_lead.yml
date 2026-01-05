@@ -1,0 +1,50 @@
+
+version: 2
+
+models:
+  - name: fact_lead
+    description: "Salesforce Lead fact with owner user SCD2 key, date key, and optional converted opportunity linkage."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # PRIMARY KEY
+      - name: LEAD_ID
+        description: "Surrogate key generated from SF_LEAD_ID via dbt_utils.surrogate_key."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: SF_LEAD_ID
+        description: "Salesforce Lead natural key used for incremental merge."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # FOREIGN KEYS
+      - name: OWNER_USER_KEY
+        description: "Foreign key referencing dim_user (dbt_scd_id of the current SCD2 record)."
+        data_type: varchar
+
+      - name: CONVERTED_OPPORTUNITY_KEY
+        description: "Foreign key referencing fact_opportunity (exposed as sf_opportunity_id in the fact)."
+        data_type: varchar
+
+      # DATES / KEYS
+      - name: LEAD_DATE_KEY
+        description: "Date key (YYYYMMDD as number) referencing dim_dates.date_key."
+        data_type: number
+
+      # DETAILS
+      - name: COMPANY
+        description: "Lead's company."
+        data_type: varchar
+
+      - name: STATUS
+        description: "Lead status."
+        data_type: varchar
+
+      # AUDIT
+      - name: LAST_MODIFIED_DATE
+        description: "Timestamp of last modification on the lead record (used for incremental loading)."
+        data_type: timestamp_ntz
+        tests: [not_null]

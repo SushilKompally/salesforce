@@ -54,8 +54,7 @@ cleaned AS (
     createddate     AS created_date,
     lastmodifieddate AS last_modified_date,
 
-    -- METADATA
-    is_deleted,
+   
 
     -- LOAD / AUDIT
     current_timestamp()::timestamp_ntz AS silver_load_date,

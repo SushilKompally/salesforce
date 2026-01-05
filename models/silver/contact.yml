@@ -1,0 +1,58 @@
+
+version: 2
+
+models:
+  - name: silver_contact
+    description: "Silver layer Contact dimension normalized from Salesforce bronze."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: contact_id
+        description: "Primary key for contact."
+        tests: [not_null, unique]
+
+      - name: account_id
+        description: "Account foreign key."
+      - name: owner_user_id
+        description: "Owner (User) foreign key."
+
+      - name: first_name
+        description: "First name."
+      - name: last_name
+        description: "Last name."
+      - name: salutation
+        description: "Salutation."
+      - name: title
+        description: "Job title."
+      - name: department
+        description: "Department."
+
+      - name: email
+        description: "Email."
+      - name: phone
+        description: "Phone."
+      - name: mobile_phone
+        description: "Mobile phone."
+
+      - name: mailing_street
+      - name: mailing_city
+      - name: mailing_state
+      - name: mailing_postal_code
+      - name: mailing_country
+
+      - name: other_street
+      - name: other_city
+      - name: other_state
+      - name: other_postal_code
+      - name: other_country
+
+      - name: lead_source
+      - name: last_modified_by_id
+      - name: created_date
+      - name: created_by_id
+      - name: last_modified_date
+        tests: [not_null]
+      - name: silver_load_date
+        description: "ETL load timestamp."
+

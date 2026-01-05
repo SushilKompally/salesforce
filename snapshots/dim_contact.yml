@@ -1,0 +1,33 @@
+
+version: 2
+
+snapshots:
+  - name: dim_contact
+    description: "Snapshot for Salesforce Contact implementing SCD Type 2 using timestamp strategy."
+    columns:
+      - name: sf_contact_id
+        description: "Unique identifier for the Salesforce Contact."
+        tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Associated Account ID for the contact."
+
+      - name: first_name
+        description: "First name of the contact."
+
+      - name: last_name
+        description: "Last name of the contact."
+
+      - name: email
+        description: "Email address of the contact."
+
+      - name: phone
+        description: "Phone number of the contact."
+
+      - name: created_date
+        description: "Date when the contact was created."
+
+      - name: last_modified_date
+        description: "Date when the contact was last modified."

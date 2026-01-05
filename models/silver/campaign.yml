@@ -38,6 +38,5 @@ models:
         data_type: timestamp_ntz
       - name: silver_load_date
         data_type: timestamp_ntz
-      - name: meta_source_name
-        data_type: varchar
+     
 

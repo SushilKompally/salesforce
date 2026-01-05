@@ -57,6 +57,7 @@ models:
         data_type: varchar
       - name: language_locale_key
         data_type: varchar
+     
 
       # LOAD DATE
       - name: silver_load_date

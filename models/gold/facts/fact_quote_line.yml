@@ -1,0 +1,45 @@
+
+version: 2
+
+models:
+  - name: fact_quote_line_item
+    description: "Salesforce Quote Line Item fact table joined to Quote and Product"
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # PRIMARY / NATURAL KEYS
+      - name: QUOTE_LINE_ITEM_KEY
+        description: "Surrogate key generated from SF_QUOTE_LINE_ITEM_ID."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: SF_QUOTE_LINE_ITEM_ID
+        description: "Salesforce Quote Line Item natural key used as merge unique_key."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      # FOREIGN KEYS
+      - name: QUOTE_KEY
+        description: "Foreign key referencing fact_quote (surrogate for quote row)."
+        data_type: varchar
+
+      - name: PRODUCT_KEY
+        description: "Foreign key referencing dim_product (dbt_scd_id of the current SCD2 record)."
+        data_type: varchar
+
+      # MEASURES / DETAILS
+      - name: QUANTITY
+        description: "Quantity on the quote line item."
+        data_type: number
+
+      - name: UNIT_PRICE
+        description: "Unit price for the quoted product."
+        data_type: number
+
+      # AUDIT
+      - name: LAST_MODIFIED_DATE
+        description: "Timestamp of last modification on the quote line item (used for incremental loading)."
+        data_type: timestamp_ntz
+    

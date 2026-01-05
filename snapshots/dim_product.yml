@@ -1,0 +1,27 @@
+
+version: 2
+
+snapshots:
+  - name: dim_product
+    description: "SCD Type 2 snapshot for Salesforce Product dimension"
+    columns:
+      - name: sf_product_id
+        description: "Unique identifier for the Salesforce product"
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: "Name of the product"
+
+      - name: product_code
+        description: "Product code assigned in Salesforce"
+
+      - name: family
+        description: "Product family classification"
+
+      - name: is_active
+        description: "Indicates if the product is active"
+
+      - name: last_modified_date
+        description: "Timestamp when the product record was last modified"

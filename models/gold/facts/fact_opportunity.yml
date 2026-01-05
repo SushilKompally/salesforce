@@ -1,0 +1,54 @@
+
+version: 2
+
+models:
+  - name: fact_opportunity
+    description: "Salesforce Opportunity fact with resolved SCD2 dimension keys (Account, Owner User, Stage), date key, and SCD-aware last_modified_date."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # ===========================
+      # PRIMARY KEY
+      # ===========================
+      - name: opportunity_key
+        description: "Surrogate key generated from sf_opportunity_id via dbt_utils.surrogate_key."
+        data_type: varchar
+
+      - name: sf_opportunity_id
+        description: "Salesforce Opportunity natural key used for incremental merge."
+        data_type: varchar
+
+      # ===========================
+      # FOREIGN KEYS
+      # ===========================
+      - name: account_key
+        description: "Foreign key referencing dim_account (dbt_scd_id of the current SCD2 record)."
+        data_type: varchar
+
+      - name: owner_user_key
+        description: "Foreign key referencing dim_user (dbt_scd_id of the current SCD2 record)."
+        data_type: varchar
+
+      - name: stage_key
+        description: "Foreign key referencing dim_opportunity_stage (surrogate key)."
+        data_type: varchar
+
+      # ===========================
+      # MEASURES / KEYS
+      # ===========================
+      - name: amount
+        description: "Opportunity amount."
+        data_type: number
+
+      - name: close_date_key
+        description: "Date key (YYYYMMDD as number) for the close date, referencing dim_dates.date_key."
+        data_type: number
+
+      # ===========================
+      # AUDIT / MODEL TARGET TIMESTAMP
+      # ===========================
+      - name: last_modified_date
+        description: "SCD-aware change timestamp computed as GREATEST(base_last_modified_date, dim_user.dbt_valid_from, dim_account.dbt_valid_from). Used for incremental filtering."
+        data_type: timestamp_ltz
