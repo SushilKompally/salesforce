@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_case_status
+    description: "Salesforce dim case_status."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: case_id
+        description: "Surrogate key generated from SF_LEAD_ID via dbt_utils.surrogate_key."
+        data_type: varchar
+        tests: [not_null, unique]
+
+      - name: status
+        description: "Salesforce status."
+        data_type: varchar
+
+      - name: is_closed
+        data_type: boolean
