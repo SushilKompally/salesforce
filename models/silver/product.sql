@@ -1,5 +1,5 @@
 
-/*
+{#
 -- Description: Incremental Load Script for Silver Layer - product table
 -- Script Name: event_silver.sql
 -- Created on: 16-Dec-2025
@@ -9,11 +9,13 @@
 --     for metadata, cleanup, and incremental filtering (merge strategy).
 -- Change History:
 --     16-Dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
 
 {{ config(
     unique_key='product_id',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
 ) }}
 
 WITH raw AS (

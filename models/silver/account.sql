@@ -1,5 +1,5 @@
 
-/*
+{#
 -- Description: Incremental Load Script for Silver Layer - account Table
 -- Script Name: silver_account.sql
 -- Created on: 15-dec-2025
@@ -10,13 +10,18 @@
 -- Data source version: v62.0
 -- Change History:
 --     15-dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
+
 
 
 
 {{ config(
     unique_key='account_id',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(
+        status='SUCCESS'
+    ) }}"
 ) }}
 
 WITH raw AS (

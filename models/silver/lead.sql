@@ -1,5 +1,5 @@
 
-/*
+{#
 -- Description: Incremental Load Script for Silver Layer - lead table
 -- Script Name: lead_silver.sql
 -- Created on: 16-Dec-2025
@@ -9,11 +9,13 @@
 --     reusable macros for metadata, cleanup, and timestamp safety.
 -- Change History:
 --     16-Dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
 
 {{ config(
     unique_key='LEAD_ID',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
 ) }}
 
 WITH raw AS (
