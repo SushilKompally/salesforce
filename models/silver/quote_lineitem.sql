@@ -1,5 +1,5 @@
 
-/*
+{#
 -- Description: Incremental Load Script for Silver quote_lineitem - event table
 -- Script Name: quote_lineitem_silver.sql
 -- Created on: 16-Dec-2025
@@ -9,11 +9,13 @@
 --     for metadata, cleanup, and incremental filtering (merge strategy).
 -- Change History:
 --     16-Dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
 
 {{ config(
     unique_key='quote_line_item_id',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
 ) }}
 
 WITH raw AS (

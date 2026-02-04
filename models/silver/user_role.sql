@@ -1,6 +1,6 @@
 
-/*
--- Description: Incremental Load Script for Silver userrole - event table
+{#
+-- Description: Incremental Load Script for Silver userrole - table
 -- Script Name: userrole_silver.sql
 -- Created on: 16-Dec-2025
 -- Author: Sushil Kumar Kompally
@@ -9,11 +9,13 @@
 --     for metadata, cleanup, and incremental filtering (merge strategy).
 -- Change History:
 --     16-Dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
 
 {{ config(
     unique_key='user_role_id',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
 ) }}
 
 WITH raw AS (

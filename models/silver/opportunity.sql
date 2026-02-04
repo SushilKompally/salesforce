@@ -1,4 +1,4 @@
-/*
+{#
 -- Description: Incremental Load Script for Silver Layer - opportunity Table
 -- Script Name: silver_opportunity.sql
 -- Created on: 16-dec-2025
@@ -8,11 +8,13 @@
 -- Data source version:v62.0
 -- Change History:
 --     16-dec-2025 - Initial creation - Sushil Kompally
-*/
+#}
 
 {{ config(
     unique_key='opportunity_id',
     incremental_strategy='merge',
+    pre_hook = "{{ log_model_audit(status='STARTED') }}",
+    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
 ) }}
 
 
