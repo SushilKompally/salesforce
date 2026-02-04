@@ -15,7 +15,8 @@
     unique_key='user_id',
     incremental_strategy='merge',
     pre_hook = "{{ log_model_audit(status='STARTED') }}",
-    post_hook = "{{ log_model_audit(status='SUCCESS') }}"
+    post_hook = "{{ log_model_audit(status='SUCCESS'
+    ) }}"
 ) }}
 
 WITH raw AS (
