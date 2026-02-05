@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dim_opportunity_stage
+    description: "Salesforce Opportunity Stage dimension with representative probability and closed flag."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: opportunity_stage_key
+        description: "Surrogate key generated from stage_name via dbt_utils.surrogate_key."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: stage_name
+        description: "Salesforce Opportunity stage name."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: probability
+        description: "Representative probability (0–100) for the stage, aggregated from opportunities."
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "probability >= 0 AND probability <= 100"
+
+      - name: is_closed
+        description: "Indicates whether the stage is considered closed (true if any opportunity in that stage is closed)."
+        data_type: boolean
+        tests:
+          - not_null
