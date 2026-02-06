@@ -4,6 +4,7 @@
     materialized='incremental',
     incremental_strategy='merge',
     unique_key='SF_CASE_ID', 
+    on_schema_change='append_new_columns',
 ) }}
 
 

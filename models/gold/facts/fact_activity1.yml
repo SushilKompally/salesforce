@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: fact_activity1
+    description: "Salesforce Activity (Event/Task) fact with owner user FK and polymorphic WhatId/WhoId references, loaded incrementally by silver_load_date."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # PRIMARY KEY
+      - name: activity_key
+        description: "Surrogate key generated from sf_activity_id via dbt_utils.surrogate_key."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: sf_activity_id
+        description: "Salesforce Activity natural key used as the unique merge key (15/18-char Id)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+
+      # FOREIGN KEYS
+      - name: owner_user_id
+        description: "Foreign key referencing dim_user.sf_user_id (current SCD2 record joined with dbt_valid_to is null)."
+        data_type: varchar
+
+
+     
+      - name: what_id
+        description: "Polymorphic reference (e.g., Account, Opportunity, Case, or custom object). May be null."
+        data_type: varchar
+
+      - name: who_id
+        description: "Polymorphic reference typically to a Person object (e.g., Contact or Lead). May be null."
+        data_type: varchar
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "who_id is null or length(who_id) in (15, 18)"
+
+      # AUDIT / INCREMENTAL
+      - name: silver_load_date
+        description: "Ingestion timestamp from Silver layer used to drive incremental loads."
+        data_type: timestamp_ntz
+        tests:
+          - not_null

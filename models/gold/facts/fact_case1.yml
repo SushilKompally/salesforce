@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: fact_case1
+    description: "Salesforce Case fact with account/contact/user FKs, case status dim key, date keys, and audit fields."
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      # PRIMARY KEY
+      - name: CASE_ID
+        description: "Surrogate key generated from SF_CASE_ID via dbt_utils.surrogate_key."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: SF_CASE_ID
+        description: "Salesforce Case natural key used for incremental merge (unique within the dataset)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      # FOREIGN KEYS
+      - name: ACCOUNT_ID
+        description: "Foreign key referencing dim_account (sf_account_id of the current SCD2 record)."
+        data_type: varchar
+      
+             
+      - name: CONTACT_ID
+        description: "Foreign key referencing dim_contact (sf_contact_id of the current SCD2 record)."
+        data_type: varchar
+       
+
+      - name: OWNER_USER_ID
+        description: "Foreign key referencing dim_user (sf_user_id of the current SCD2 record)."
+        data_type: varchar
+       
+      - name: CASE_STATUS_KEY
+        description: "Foreign key referencing dim_case_status.case_status_key."
+        data_type: varchar
+       
+      # DATES / KEYS
+      - name: CREATED_DATE_KEY
+        description: "Date key (YYYYMMDD as number) referencing dim_dates.date_key for case created_date."
+        data_type: number
+        tests:
+          - not_null
+         
+      - name: CLOSED_DATE_KEY
+        description: "Date key (YYYYMMDD as number) referencing dim_dates.date_key for case closed_date (nullable)."
+        data_type: number
+       
+
+      # AUDIT
+      - name: LAST_MODIFIED_DATE
+        description: "Timestamp of last modification on the case record (used for incremental loading)."
+        data_type: timestamp_ntz
+        tests:
+          - not_null

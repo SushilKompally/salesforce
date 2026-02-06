@@ -24,7 +24,7 @@ WITH raw AS (
   SELECT
     *,
     {{ source_metadata() }}
-  FROM {{ source('salesforce_bronze', 'opportunity_history') }}
+   FROM {{ source('salesforce_bronze', 'opportunity_history') }}
   WHERE 1=1
   {{ incremental_filter() }}  
 
@@ -49,8 +49,8 @@ cleaned AS (
 
         -- CHANGE TRACKING
         {{ clean_string('field') }}     AS field,
-        {{ clean_string('oldvalue') }}  AS old_value,
-        {{ clean_string('newvalue') }}  AS new_value,
+        {{ clean_string('oldvalue') }}  AS oldvalue,
+        {{ clean_string('newvalue') }}  AS newvalue,
 
         -- STATUS FLAGS
         is_closed AS is_closed,
@@ -68,4 +68,4 @@ cleaned AS (
 )
 
 SELECT *
-FROM cleaned;
+FROM cleaned

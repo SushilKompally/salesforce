@@ -23,7 +23,7 @@
   {% if tool_name_lc == "fivetran" -%}
     -- Types: tool_name:string='fivetran', record_creation_column:string
     LastModifiedDate AS _source_timestamp,
-    COALESCE(TRY_TO_BOOLEAN(ISDELETED), FALSE) AS is_deleted
+   -- COALESCE(TRY_TO_BOOLEAN(ISDELETED), FALSE) AS is_deleted
 
   {%- elif tool_name_lc == "stitch" -%}
     -- Types: tool_name:string='stitch', record_creation_column:string
