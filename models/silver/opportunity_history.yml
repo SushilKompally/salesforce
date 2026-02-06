@@ -22,11 +22,11 @@ models:
       - name: PROBABILITY
         data_type: number
       - name: CLOSE_DATE
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: FIELD
         data_type: varchar
-      - name: OLDVALUE
+      - name: oldvalue
         data_type: varchar
       - name: NEWVALUE
         data_type: varchar

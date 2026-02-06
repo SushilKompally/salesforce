@@ -41,7 +41,7 @@ def load_yaml(path: Path) -> Dict[str, Any]:
         raise FileNotFoundError(f"YAML file not found: {path}")
     if yaml is None:
         raise RuntimeError(
-            "PyYAML is not available. Please install locally with: pip install pyyaml"
+            "PyYAML is not available.  Please install locally with: pip install pyyaml"
         )
     with path.open("r", encoding="utf-8") as f:
         data = yaml.safe_load(f)

@@ -4,7 +4,7 @@
   config(
     unique_key='sf_account_id',
     strategy='timestamp',
-    updated_at='last_modified_date',
+    updated_at='last_modified_date', 
   )
 }}
 

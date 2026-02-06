@@ -5,7 +5,7 @@
     materialized='incremental',
     incremental_strategy='merge',
     unique_key='SF_ACTIVITY_ID',
-    on_schema_change='append_new_columns'
+    on_schema_change='append_new_columns',
 ) }}
 
 SELECT    
