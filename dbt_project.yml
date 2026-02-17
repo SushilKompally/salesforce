@@ -64,15 +64,15 @@ models:
   salesforce:
     salesforce:
       silver:
-        +database:  "{{ env_var('DBT_SALESFORCE', 'SALESFORCE') }}"
-        +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER') }}"
+        +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
+        +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER_SALESFORCE') }}"
         +materialized: "incremental"
         +on_schema_change: append_new_columns
         
         
       gold:
-        +database:  "{{ env_var('DBT_SALESFORCE', 'SALESFORCE') }}"
-        +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'TEST_GOLD') }}"
+        +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
+        +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'GOLD_SALESFORCE') }}"
         +materialized: "incremental"
         +on_schema_change: append_new_columns
         
@@ -80,8 +80,8 @@ models:
 snapshots:
   salesforce:
     salesforce:
-      +target_database: "{{ env_var('DBT_SALESFORCE', 'SALESFORCE') }}"
-      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'TEST_GOLD') }}"
+      +target_database: "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
+      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'SNAPSHOT_SALESFORCE') }}"
       +strategy: timestamp
       +invalidate_hard_deletes: true
    
