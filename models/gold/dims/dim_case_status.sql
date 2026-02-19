@@ -13,7 +13,7 @@ WITH distinct_cases AS (
 )
 
 SELECT 
-    {{ dbt_utils.surrogate_key(['status', 'is_closed']) }} AS case_status_key,
+    {{ dbt_utils.generate_surrogate_key(['status', 'is_closed']) }} AS case_status_key,
     status AS status_name,
     is_closed
 FROM distinct_cases

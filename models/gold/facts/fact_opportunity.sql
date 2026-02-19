@@ -5,7 +5,7 @@
 
 WITH opportunity_base AS (
     SELECT
-        {{ dbt_utils.surrogate_key(['so.opportunity_id']) }}  AS opportunity_key,
+        {{ dbt_utils.generate_surrogate_key(['so.opportunity_id']) }}  AS opportunity_key,
         so.opportunity_id   AS sf_opportunity_id,
         so.account_id,
         so.owner_user_id,

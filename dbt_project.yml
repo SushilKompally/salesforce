@@ -46,6 +46,8 @@ vars:
   source_record_creation_column: "{{ env_var('RECORD_CREATION_COLUMN', 'lastmodifieddate') }}"
   silver_target_timestamp_col: "{{ env_var('TARGET_TIMESTAMP_COL', 'last_modified_date') }}"
 
+  surrogate_key_treat_nulls_as_empty_strings: true
+
   # for {{ var('source_database_name') }}
   source_database_name: "salesforce_db"
 

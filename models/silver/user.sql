@@ -24,7 +24,7 @@ WITH raw AS (
     SELECT
         *,
         {{ source_metadata() }}                                  
-    select * FROM {{ source('salesforce_bronze', 'user') }}
+    FROM {{ source('salesforce_bronze', 'user') }}
     WHERE 1=1
   {{ incremental_filter() }}  
 
@@ -65,7 +65,6 @@ cleaned AS (
         {{ clean_string('timezonesidkey') }}      AS time_zone_sid_key,
         {{ clean_string('localesidkey') }}        AS locale_sid_key,
         {{ clean_string('languagelocalekey') }}   AS language_locale_key,
-        isdeleted  AS is_deleted,
 
         -- LOAD DATE
         current_timestamp()::timestamp_ntz AS silver_load_date

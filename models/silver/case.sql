@@ -57,7 +57,7 @@ cleaned AS (
 
     -- FLAGS / METADATA
     isclosed    AS is_closed,
-    is_deleted,
+    isdeleted,
 
     -- AUDIT
     current_timestamp()::timestamp_ntz           AS silver_load_date,

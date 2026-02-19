@@ -10,7 +10,7 @@
 
 WITH base AS (
   SELECT 
-      {{ dbt_utils.surrogate_key(['sq.quote_id']) }} AS QUOTE_KEY,
+      {{ dbt_utils.generate_surrogate_key(['sq.quote_id']) }} AS QUOTE_KEY,
       sq.quote_id                                     AS SF_QUOTE_ID,
       fo.OPPORTUNITY_KEY,
       da.DBT_SCD_ID                                   AS ACCOUNT_KEY,

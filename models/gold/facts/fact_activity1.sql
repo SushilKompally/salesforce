@@ -9,7 +9,7 @@
 ) }}
 
 SELECT    
-    {{ dbt_utils.surrogate_key(['e.activity_id']) }} AS activity_key,
+    {{ dbt_utils.generate_surrogate_key(['e.activity_id']) }} AS activity_key,
     e.activity_id         AS sf_activity_id,
     du.sf_user_id         AS owner_user_id,
     e.what_id,

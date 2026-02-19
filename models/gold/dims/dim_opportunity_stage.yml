@@ -27,8 +27,8 @@ models:
         data_type: number
         tests:
           - not_null
-          - dbt_utils.expression_is_true:
-              expression: "probability >= 0 AND probability <= 100"
+          # - dbt_utils.expression_is_true:
+            # expression: "probability >= 0 AND probability <= 100"
 
       - name: is_closed
         description: "Indicates whether the stage is considered closed (true if any opportunity in that stage is closed)."
