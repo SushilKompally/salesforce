@@ -13,6 +13,7 @@ snapshots:
 
       - name: name
         description: "Name of the account."
+        
 
       - name: account_number
         description: "Account number assigned in Salesforce."

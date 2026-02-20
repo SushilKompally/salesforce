@@ -5,12 +5,13 @@ snapshots:
   - name: dim_campaign
     description: "Snapshot for Salesforce Campaign implementing SCD Type 2 using timestamp strategy."
     columns:
-      - name: sf_campaign_id
+      - name: campaign_id
         description: "Unique identifier for the Salesforce Campaign."
         tests:
           - not_null
           - unique
-
+      # - name: campaign_id
+      #   description: "unique saleforce campaign."
       - name: name
         description: "Name of the campaign."
 

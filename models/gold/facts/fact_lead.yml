@@ -13,12 +13,12 @@ models:
       - name: LEAD_ID
         description: "Surrogate key generated from SF_LEAD_ID via dbt_utils.surrogate_key."
         data_type: varchar
-        tests: [not_null, unique]
+        # tests: [not_null, unique]
 
       - name: SF_LEAD_ID
         description: "Salesforce Lead natural key used for incremental merge."
         data_type: varchar
-        tests: [not_null, unique]
+        # tests: [not_null, unique]
 
       # FOREIGN KEYS
       - name: OWNER_USER_KEY

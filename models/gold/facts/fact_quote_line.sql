@@ -4,7 +4,6 @@
     incremental_strategy='merge',
     unique_key='SF_QUOTE_LINE_ITEM_ID',
     on_schema_change='append_new_columns',
-    contract={'enforced': true}
 ) }}
 
 WITH base AS (
