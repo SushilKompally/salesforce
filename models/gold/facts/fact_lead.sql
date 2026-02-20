@@ -10,7 +10,7 @@
 WITH base AS (
   SELECT 
       -- PRIMARY KEY (surrogate)
-      {{ dbt_utils.surrogate_key(['sl.lead_id']) }}        AS LEAD_ID,
+      {{ dbt_utils.generate_surrogate_key(['sl.lead_id']) }}     AS LEAD_ID,
 
       -- Natural key
       sl.lead_id                                           AS SF_LEAD_ID,

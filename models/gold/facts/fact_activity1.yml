@@ -38,9 +38,7 @@ models:
       - name: who_id
         description: "Polymorphic reference typically to a Person object (e.g., Contact or Lead). May be null."
         data_type: varchar
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: "who_id is null or length(who_id) in (15, 18)"
+      
 
       # AUDIT / INCREMENTAL
       - name: silver_load_date

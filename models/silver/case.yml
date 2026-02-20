@@ -37,5 +37,5 @@ models:
         data_type: boolean
       - name: silver_load_date
         data_type: timestamp_ntz
-      - name: is_deleted
+      - name: isdeleted
         data_type: boolean

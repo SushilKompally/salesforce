@@ -15,7 +15,7 @@ WITH aggregated_data AS (
 )
 
 SELECT
-    {{ dbt_utils.surrogate_key(['STAGE_NAME']) }} AS OPPORTUNITY_STAGE_KEY,
+    {{ dbt_utils.generate_surrogate_key(['STAGE_NAME']) }} AS OPPORTUNITY_STAGE_KEY,
     STAGE_NAME,
     PROBABILITY,
     IS_CLOSED

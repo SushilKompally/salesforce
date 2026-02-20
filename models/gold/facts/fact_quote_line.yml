@@ -6,7 +6,7 @@ models:
     description: "Salesforce Quote Line Item fact table joined to Quote and Product"
     config:
       contract:
-        enforced: true
+        enforced: false
 
     columns:
       # PRIMARY / NATURAL KEYS

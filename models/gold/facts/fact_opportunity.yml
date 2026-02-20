@@ -51,4 +51,4 @@ models:
       # ===========================
       - name: last_modified_date
         description: "SCD-aware change timestamp computed as GREATEST(base_last_modified_date, dim_user.dbt_valid_from, dim_account.dbt_valid_from). Used for incremental filtering."
-        data_type: timestamp_ltz
+        data_type: timestamp_ntz

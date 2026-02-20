@@ -1,5 +1,3 @@
-
-
 {% snapshot dim_campaign %}
 {{
   config(
@@ -8,16 +6,14 @@
     updated_at='last_modified_date',
   )
 }}
-
-  SELECT
-    campaign_id as sf_campaign_id,
-    name,
-    entity_type,
-    status,
-    start_date,
-    end_date,
-    owner_user_id,
-    last_modified_date
- FROM {{ ref('campaign') }}   
+select
+  campaign_id as sf_campaign_id,
+  name,
+  entity_type,
+  status,
+  start_date,
+  end_date,
+  owner_user_id,
+  last_modified_date
+from {{ ref('campaign') }}
 {% endsnapshot %}
-

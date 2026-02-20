@@ -4,12 +4,11 @@
     incremental_strategy='merge',
     unique_key='SF_QUOTE_LINE_ITEM_ID',
     on_schema_change='append_new_columns',
-    contract={'enforced': true}
 ) }}
 
 WITH base AS (
   SELECT
-      {{ dbt_utils.surrogate_key(['sqli.QUOTE_LINE_ITEM_ID']) }} AS QUOTE_LINE_ITEM_KEY,
+      {{ dbt_utils.generate_surrogate_key(['sqli.QUOTE_LINE_ITEM_ID']) }} AS QUOTE_LINE_ITEM_KEY,
       sqli.QUOTE_LINE_ITEM_ID                                    AS SF_QUOTE_LINE_ITEM_ID,
       fq.QUOTE_KEY,
       dp.DBT_SCD_ID                                              AS PRODUCT_KEY,

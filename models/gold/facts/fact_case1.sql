@@ -10,7 +10,7 @@
 
 
 SELECT
-    {{ dbt_utils.surrogate_key(['sc.CASE_ID']) }} AS CASE_ID,
+    {{ dbt_utils.generate_surrogate_key(['sc.CASE_ID']) }} AS CASE_ID,
     sc.CASE_ID AS SF_CASE_ID, 
     da.SF_ACCOUNT_ID AS ACCOUNT_ID,        
     dc.SF_CONTACT_ID AS CONTACT_ID,         
