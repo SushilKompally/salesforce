@@ -24,7 +24,7 @@ WITH raw AS (
   SELECT
     *,
     {{ source_metadata() }}
-   FROM {{ source('salesforce_bronze', 'opportunity_history') }}
+  FROM {{ source('salesforce_bronze', 'opportunity_history') }}
   WHERE 1=1
   {{ incremental_filter() }}  
 
@@ -60,6 +60,7 @@ cleaned AS (
         created_by_id      AS created_by_id,
         created_date       AS created_date,
         last_updated       AS last_updated,
+      --  lastmodifieddate AS last_modified_date,
 
         -- LOAD DATE
         current_timestamp()::timestamp_ntz AS silver_load_date
@@ -69,3 +70,6 @@ cleaned AS (
 
 SELECT *
 FROM cleaned
+
+
+

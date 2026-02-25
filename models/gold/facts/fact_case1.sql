@@ -1,6 +1,4 @@
 {{ config(
-    database='SALESFORCE_DB',
-    schema='TEST_GOLD',
     materialized='incremental',
     incremental_strategy='merge',
     unique_key='SF_CASE_ID', 

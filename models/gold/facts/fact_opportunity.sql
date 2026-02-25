@@ -3,49 +3,49 @@
     unique_key='sf_opportunity_id'
 ) }}
 
-WITH opportunity_base AS (
-    SELECT
-        {{ dbt_utils.generate_surrogate_key(['so.opportunity_id']) }}  AS opportunity_key,
-        so.opportunity_id   AS sf_opportunity_id,
+with opportunity_base as (
+    select
+        {{ dbt_utils.generate_surrogate_key(['so.opportunity_id']) }}  as opportunity_key,
+        so.opportunity_id   as sf_opportunity_id,
         so.account_id,
         so.owner_user_id,
         so.stage_name,
-        so.amount   AS amount,
-        cast(so.close_date AS date)  AS close_date,
-        cast(so.silver_load_date AS timestamp_ntz) AS base_last_modified_date
-    FROM {{ ref('opportunity') }} so
+        so.amount   as amount,
+        cast(so.close_date as date)                    as close_date,
+        cast(so.silver_load_date as timestamp_ntz)     as base_last_modified_date
+    from {{ ref('opportunity') }} so
 ),
 
-dim_joins AS (
-    SELECT
+dim_joins as (
+    select
         ob.opportunity_key,
         ob.sf_opportunity_id,
-        du.dbt_scd_id  AS owner_user_key,
-        da.dbt_scd_id  AS account_key,
-        dos.opportunity_stage_key  AS stage_key,
+        du.dbt_scd_id        as owner_user_key,
+        da.dbt_scd_id        as account_key,
+        dos.opportunity_stage_key as stage_key,
         ob.amount,
-        to_number(to_varchar(ob.close_date, 'YYYYMMDD')) AS close_date_key,
-        du.dbt_valid_from  AS owner_user_changed_at,
-        da.dbt_valid_from  AS account_changed_at,
-           
+        to_number(to_varchar(ob.close_date, 'YYYYMMDD')) as close_date_key,
+        du.dbt_valid_from    as owner_user_changed_at,
+        da.dbt_valid_from    as account_changed_at,
+
         greatest(
           ob.base_last_modified_date,
           du.dbt_valid_from,
           da.dbt_valid_from
-        )                   AS change_ts
-    FROM opportunity_base ob
-    LEFT JOIN {{ ref('dim_user') }} du
+        ) as change_ts
+    from opportunity_base ob
+    left join {{ ref('dim_user') }} du
       on ob.owner_user_id = du.sf_user_id
-     AND du.dbt_valid_to is null
-    LEFT JOIN {{ ref('dim_account') }} da
+     and du.dbt_valid_to is null
+    left join {{ ref('dim_account') }} da
       on ob.account_id = da.sf_account_id
-     AND da.dbt_valid_to is null
-    LEFT JOIN {{ ref('dim_opportunity_stage') }} dos
+     and da.dbt_valid_to is null
+    left join {{ ref('dim_opportunity_stage') }} dos
       on ob.stage_name = dos.stage_name
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         -- PKs
         opportunity_key,
         sf_opportunity_id,
@@ -57,19 +57,16 @@ final AS (
         amount,
         close_date_key,
         -- model’s target timestamp
-        change_ts  AS last_modified_date
-    FROM dim_joins
-    
-    {% if is_incremental() %}
-      WHERE change_ts > (
-        SELECT coalesce(max(silver_load_date), to_timestamp_ntz('1900-01-01'))
-        FROM {{ this }}
-       )
-    {% endif %}
+        change_ts  as last_modified_date
+    from dim_joins
 
+    {% if is_incremental() %}
+      where change_ts > (
+        select coalesce(max(last_modified_date), to_timestamp_ntz('1900-01-01'))
+        from {{ this }}
+      )
+    {% endif %}
 )
 
-SELECT *
-FROM final
-
-
+select *
+from final
