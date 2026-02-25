@@ -47,3 +47,6 @@ models:
 
       - name: SILVER_LOAD_DATE
         data_type: timestamp_ntz
+      
+      # - name: LAST_MODIFIED_DATE
+      #   data_type: timestamp_ltz

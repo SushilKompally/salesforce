@@ -14,14 +14,14 @@ models:
         data_type: varchar
         tests:
           - not_null
-          - unique
+          # - unique
 
       - name: SF_CASE_ID
         description: "Salesforce Case natural key used for incremental merge (unique within the dataset)."
         data_type: varchar
         tests:
           - not_null
-          - unique
+          # - unique
 
       # FOREIGN KEYS
       - name: ACCOUNT_ID

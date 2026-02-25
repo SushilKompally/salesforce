@@ -47,6 +47,7 @@ vars:
   silver_target_timestamp_col: "{{ env_var('TARGET_TIMESTAMP_COL', 'last_modified_date') }}"
 
   surrogate_key_treat_nulls_as_empty_strings: true
+  
 
   # for {{ var('source_database_name') }}
   source_database_name: "salesforce_db"
@@ -64,26 +65,24 @@ vars:
 
 models:
   salesforce:
-    salesforce:
-      silver:
-        +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
-        +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER_SALESFORCE') }}"
-        +materialized: "incremental"
-        +on_schema_change: append_new_columns
+    silver:
+      +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
+      +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER_SALESFORCE') }}"
+      +materialized: "incremental"
+      +on_schema_change: append_new_columns
         
         
-      gold:
-        +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
-        +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'GOLD_SALESFORCE') }}"
-        +materialized: "incremental"
-        +on_schema_change: append_new_columns
+    gold:
+      +database:  "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
+      +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'GOLD_SALESFORCE') }}"
+      +materialized: "incremental"
+      +on_schema_change: append_new_columns
         
    
 snapshots:
-  salesforce:
     salesforce:
       +target_database: "{{ env_var('DBT_SALESFORCE', 'DATA_PLATFORM_DB') }}"
-      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'SNAPSHOT_SALESFORCE') }}"
+      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'SALESFORCE_SNAPSHOTS') }}"
       +strategy: timestamp
       +invalidate_hard_deletes: true
    
